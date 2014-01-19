@@ -2,7 +2,7 @@
   (:use clojure.test)
   (:require 
    [enliven.html :as h :refer [static-template content class
-                               append prepend style]]
+                               append prepend style discard]]
    [enliven.html.jsoup :as jsoup]))
 
 
@@ -40,5 +40,9 @@
    (testing "style transform - with embedded strings"
      (let [trans (static-template node3 :div (style :color :color))]
       (is (= (page-wrap "<div style='color:red;content:url(welcome), \"testing; \" url(logo);'></div>")
-             (trans {:color "red"}))))))
+             (trans {:color "red"})))))
+   (testing "removing a node"
+     (let [trans (static-template node :div discard)]
+      (is (= (page-wrap "")
+             (trans {}))))))
 
